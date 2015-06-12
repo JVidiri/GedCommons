@@ -1,0 +1,24 @@
+SintegraData
+      -String companyName;
+      -String companyNameFictitious;
+      -String street; 
+      -String CEP; 
+      -String adressNumber; 
+      -String adressComplement;  
+      -String district; 
+      -String town; 
+      -String UF; 
+      -String phone; 
+      -String country; 
+      -Date lastSintegraUpdate; 
+      -Date companyOpenDate; 
+      -Boolean authorised; 
+      -Date authorisedDate; 
+      -String email;
+
+
+﻿CREATE TABLE station(
+	id_station SERIAL primary key,
+	CNPJ char(14),
+	password char(256)
+);
