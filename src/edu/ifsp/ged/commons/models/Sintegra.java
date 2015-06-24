@@ -6,7 +6,7 @@ package edu.ifsp.ged.commons.models;
  * @author jvidiri
  *
  */
-public class SintegraModel {
+public class Sintegra {
 	
 	private String companyName;
 	private String companyNameFictitious;

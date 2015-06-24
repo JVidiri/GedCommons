@@ -2,9 +2,9 @@ package edu.ifsp.ged.commons.models;
 
 import edu.ifsp.ged.commons.ranking.Ranking;
 
-public class DistributorBaseModel {
+public class DistributorBase {
 	private String cnpj;
-	private SintegraModel sintegraData;
+	private Sintegra sintegraData;
 	private Ranking baseRanking;
 
 	public String getCnpj() {
@@ -15,11 +15,11 @@ public class DistributorBaseModel {
 		this.cnpj = cnpj;
 	}
 
-	public SintegraModel getSintegraData() {
+	public Sintegra getSintegraData() {
 		return sintegraData;
 	}
 
-	public void setSintegraData(SintegraModel sintegraData) {
+	public void setSintegraData(Sintegra sintegraData) {
 		this.sintegraData = sintegraData;
 	}
 

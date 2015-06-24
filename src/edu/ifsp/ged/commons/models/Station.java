@@ -2,16 +2,15 @@ package edu.ifsp.ged.commons.models;
 
 import edu.ifsp.ged.commons.product.Product;
 import edu.ifsp.ged.commons.ranking.Ranking;
-import edu.ifsp.ged.commons.utils.Utils.enumOpHours;
 
-public class StationModel {
+public class Station {
 	private String CNPJ;
 	private String stationPassword;
-	private enumOpHours operatingHhours;
-	private SintegraModel sintegraData;
+	private OpHours operationHhours;
+	private Sintegra sintegraData;
 	private Ranking stationRanking;
 	private Product[] stationProducts;
-	private DistributorBaseModel[] stationDases;
+	private DistributorBase[] stationDases;
 
 	public String getCNPJ() {
 		return CNPJ;
@@ -29,19 +28,19 @@ public class StationModel {
 		this.stationPassword = stationPassword;
 	}
 
-	public enumOpHours getOperatingHhours() {
-		return operatingHhours;
+	public OpHours getOperatingHhours() {
+		return operationHhours;
 	}
 
-	public void setOperatingHhours(enumOpHours operatingHhours) {
-		this.operatingHhours = operatingHhours;
+	public void setOperatingHhours(OpHours operatingHhours) {
+		this.operationHhours = operatingHhours;
 	}
 
-	public SintegraModel getSintegraData() {
+	public Sintegra getSintegraData() {
 		return sintegraData;
 	}
 
-	public void setSintegraData(SintegraModel sintegraData) {
+	public void setSintegraData(Sintegra sintegraData) {
 		this.sintegraData = sintegraData;
 	}
 
@@ -61,11 +60,11 @@ public class StationModel {
 		this.stationProducts = stationProducts;
 	}
 
-	public DistributorBaseModel[] getStationDases() {
+	public DistributorBase[] getStationDases() {
 		return stationDases;
 	}
 
-	public void setStationDases(DistributorBaseModel[] stationDases) {
+	public void setStationDases(DistributorBase[] stationDases) {
 		this.stationDases = stationDases;
 	}
 

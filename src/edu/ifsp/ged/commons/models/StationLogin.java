@@ -3,15 +3,16 @@ package edu.ifsp.ged.commons.models;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class LoginModel {
+public class StationLogin {
+	
 	private String CNPJ;
 	private String stationPassword;
 	
 	public String getCNPJ() {
 		return CNPJ;
 	}
-	public void setCNPJ(String cNPJ) {
-		CNPJ = cNPJ;
+	public void setCNPJ(String CNPJ) {
+		this.CNPJ = CNPJ;
 	}
 	public String getStationPassword() {
 		return stationPassword;
@@ -30,7 +31,8 @@ public class LoginModel {
 	public String serializeInJson() throws JSONException{
 		JSONObject jsonSerial = new JSONObject();
 		jsonSerial.put("CNPJ", this.getCNPJ());
-		jsonSerial.put("stationPassword", this.getStationPassword());				
+		jsonSerial.put("stationPassword", this.getStationPassword());
+		jsonSerial.put("type", "adminConsole");
 		return jsonSerial.toString();		
 	}
 	
@@ -45,10 +47,15 @@ public class LoginModel {
 		this.setCNPJ(jsonMessage.getString("CNPJ"));
 		this.setStationPassword(jsonMessage.getString("stationPassword"));		
 	}
+
+	//default constructor
+	public StationLogin() {
+		
+	}
 	
-	public LoginModel(String cNPJ, String stationPassword) {
+	public StationLogin(String CNPJ, String stationPassword) {
 		super();
-		CNPJ = cNPJ;
+		this.CNPJ = CNPJ;
 		this.stationPassword = stationPassword;
 	}	
 	

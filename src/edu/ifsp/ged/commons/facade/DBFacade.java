@@ -7,10 +7,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import edu.ifsp.ged.commons.models.DistributorBaseModel;
-import edu.ifsp.ged.commons.models.SintegraModel;
-import edu.ifsp.ged.commons.models.StationModel;
-import edu.ifsp.ged.commons.models.UserModel;
+import edu.ifsp.ged.commons.models.DistributorBase;
+import edu.ifsp.ged.commons.models.Sintegra;
+import edu.ifsp.ged.commons.models.Station;
+import edu.ifsp.ged.commons.models.StationLogin;
+import edu.ifsp.ged.commons.models.User;
+import edu.ifsp.ged.commons.models.UserLogin;
 
 /**
  * Classe responsavel pala conexão e manejamento do banco de dados.
@@ -22,9 +24,9 @@ public class DBFacade {
 	//objeto de connexão com o banco.
 	Connection conn = null;
 	static String forNameDbClass = "org.postgresql.Driver"; 
-	static String doConnString = "jdbc:postgresql://localhost:5432/testdb";
+	static String doConnString = "jdbc:postgresql://localhost:5432/gedDb";
 	static String dbPass = "gedAdm123";
-	static String dbName = "gedControl";
+	static String dbName = "gedAdm";
 
 	/**
 	 * open the new connection to be used in the class.
@@ -39,7 +41,7 @@ public class DBFacade {
 	 */
 	public void closeConnection() throws Exception {
 		// verify the connection is open
-		if (conn.isValid(1000)) {
+		if (isConnected()) {
 			// if open close
 			conn.close();
 		}
@@ -65,7 +67,7 @@ public class DBFacade {
 	 * @return
 	 * @throws SQLException 
 	 */
-	public UserModel getUserByUserName(String userName) throws SQLException{
+	public User getUserByUserName(String userName) throws SQLException{
 		String selectUser = "select * from user where userName = ?;";		
 		PreparedStatement statement = conn.prepareStatement(selectUser, Statement.RETURN_GENERATED_KEYS);
 		ResultSet result;
@@ -73,7 +75,7 @@ public class DBFacade {
 		result = statement.executeQuery();
 		if (result.next()){
 			//creating new user to return to caller
-			UserModel newUserModel = new UserModel();			
+			User newUserModel = new User();			
 			newUserModel.setBirthdayDate(result.getLong("birthdayDate"));
 			newUserModel.setCompleteName(result.getString("completeName"));
 			newUserModel.seteMail(result.getString("e_mail"));
@@ -82,6 +84,56 @@ public class DBFacade {
 			newUserModel.setUserPasswordHash("userPassword");
 			//return to caller
 			return newUserModel;
+		}		
+		return null;
+	}
+	
+	/**
+	 * Pocura usuário na base de dados
+	 * 
+	 * @param userName
+	 * @return
+	 * @throws SQLException 
+	 */
+	public UserLogin getUserLoginByUserName(String userName) throws SQLException{
+		String selectUser = "select * from UserLogin where userName = ?;";		
+		PreparedStatement statement = conn.prepareStatement(selectUser, Statement.RETURN_GENERATED_KEYS);
+		ResultSet result;
+		statement.setString(1, userName);		
+		result = statement.executeQuery();
+		if (result.next()){
+			//creating new user to return to caller
+			UserLogin newUserModel = new UserLogin();
+			newUserModel.setUserName(userName);
+			newUserModel.setUserPassword("userPassword");
+			//return to caller
+			return newUserModel;
+		}		
+		return null;
+	}
+	
+	/**
+	 * Pocura usuário na base de dados
+	 * 
+	 * @param userName
+	 * @return
+	 * @throws SQLException 
+	 */
+	public StationLogin getStationLoginByCNPJ(String CNPJ) throws SQLException{										   
+		String selectUser = "select * from \"stationLoginData\" where \"stationCNPJ\" = ?;";		
+		PreparedStatement statement = conn.prepareStatement(selectUser);
+		//add the where parameter
+		statement.setString(1, CNPJ);
+		System.out.println(statement);
+		ResultSet result;				
+		result = statement.executeQuery();
+		if (result.next()){
+			//creating new user to return to caller
+			StationLogin newStation = new StationLogin();			
+			newStation.setCNPJ(CNPJ);
+			newStation.setStationPassword(result.getString("stationPassword"));						
+			//return to caller
+			return newStation;
 		}		
 		return null;
 	}
@@ -102,7 +154,7 @@ public class DBFacade {
 	 * @param toResgist
 	 * @return
 	 */
-	public int stationRegist(StationModel toResgist) {
+	public int stationRegist(Station toResgist) {
 		return 0;
 	}
 
@@ -112,8 +164,25 @@ public class DBFacade {
 	 * @param toRegist
 	 * @return
 	 */
-	public int distributorRegist(DistributorBaseModel toRegist) {
+	public int distributorRegist(DistributorBase toRegist) {
 		return 0;
+	}
+	
+	/**
+	 * To registe the distribution
+	 * 
+	 * @param toRegist
+	 * @return
+	 * @throws SQLException 
+	 */
+	public int addActiveSessionRegist(String hash) throws SQLException {
+		String insertUser = "insert into \"activeSessions\"(\"hash\",\"activatedAt\") values(?,?);";
+		PreparedStatement statement = conn.prepareStatement(insertUser, Statement.RETURN_GENERATED_KEYS);
+		statement.setString(1, hash);
+		statement.setLong(2, System.currentTimeMillis());		
+		int result =  statement.executeUpdate();
+		System.out.println(statement);
+		return result;
 	}
 
 	/**
@@ -122,7 +191,7 @@ public class DBFacade {
 	 * @param toRegist
 	 * @return
 	 */
-	public int userRegist(UserModel toRegist) throws SQLException{		
+	public int userRegist(User toRegist) throws SQLException{		
 		String insertUser = "insert into user(userName,	birthdayDate, userPassword, completeName, e_mail) values(?,?,?,?,?);";
 		PreparedStatement statement = conn.prepareStatement(insertUser, Statement.RETURN_GENERATED_KEYS);
 		statement.setString(1, toRegist.getUserName());
@@ -141,7 +210,7 @@ public class DBFacade {
 	 * @param toRegist
 	 * @return
 	 */
-	public int sintegraDataRegist(SintegraModel toRegist) {
+	public int sintegraDataRegist(Sintegra toRegist) {
 		return 0;
 	}
 
@@ -151,7 +220,7 @@ public class DBFacade {
 	 * @param toRegist
 	 * @return
 	 */
-	public int stationChange(SintegraModel newData, int idToChange) {
+	public int stationChange(Sintegra newData, int idToChange) {
 		return 0;
 	}
 
@@ -162,7 +231,7 @@ public class DBFacade {
 	 * @param idToChange
 	 * @return
 	 */
-	public int distributorChange(DistributorBaseModel newData, int idToChange) {
+	public int distributorChange(DistributorBase newData, int idToChange) {
 		return 0;
 	}
 
@@ -173,7 +242,7 @@ public class DBFacade {
 	 * @param idToChange
 	 * @return
 	 */
-	public int userChange(UserModel newData, int idToChange) {
+	public int userChange(User newData, int idToChange) {
 		return 0;
 	}
 
@@ -184,7 +253,7 @@ public class DBFacade {
 	 * @param idToChange
 	 * @return
 	 */
-	public int updateSintegraChange(SintegraModel newData, int idToChange) {
+	public int updateSintegraChange(Sintegra newData, int idToChange) {
 		return 0;
 	}
 

@@ -9,13 +9,31 @@ import org.json.JSONObject;
 import edu.ifsp.ged.commons.ranking.UserRanking;
 import edu.ifsp.ged.commons.utils.hash.HashHandler;
 
-public class UserModel {
+public class User {
+
+	private long userId;
 	private String userName;
 	private long birthdayDate;
 	private String UserPassword;
 	private String completeName;
 	private String eMail;
 	private UserRanking userRanking;
+
+	public long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(long userId) {
+		this.userId = userId;
+	}
+
+	public String getUserPassword() {
+		return UserPassword;
+	}
+
+	public void setUserPassword(String userPassword) {
+		UserPassword = userPassword;
+	}
 
 	public String getUserName() {
 		return userName;
@@ -45,17 +63,17 @@ public class UserModel {
 	 * @throws NoSuchAlgorithmException
 	 * @throws InvalidKeySpecException
 	 */
-	public void generatePasswordHash(String userPassword) throws NoSuchAlgorithmException, InvalidKeySpecException{		
+	public void generatePasswordHash(String userPassword)
+			throws NoSuchAlgorithmException, InvalidKeySpecException {
 		setUserPasswordHash(HashHandler.createHash(userPassword));
 	}
-	
+
 	/**
-	 * Use only when you have the hash! 
-	 * Otherwise use generatePasswordHash.
+	 * Use only when you have the hash! Otherwise use generatePasswordHash.
 	 * 
 	 * @param userPassword
 	 */
-	public void setUserPasswordHash(String userPassword) {		
+	public void setUserPasswordHash(String userPassword) {
 		UserPassword = userPassword;
 	}
 
@@ -80,37 +98,36 @@ public class UserModel {
 	}
 
 	public void setUserRanking(long userRankingId) {
-		//TODO
+		// TODO
 	}
-	
+
 	public void setUserRanking(UserRanking userRanking) {
 		this.userRanking = userRanking;
 	}
-	
+
 	/**
-	 * Serialize this object into a json and 
-	 * return it as string.  
+	 * Serialize this object into a json and return it as string.
 	 * 
 	 * @return
-	 * @throws JSONException 
+	 * @throws JSONException
 	 */
-	public String serializeInJson() throws JSONException{
+	public String serializeInJson() throws JSONException {
 		JSONObject jsonSerial = new JSONObject();
 		jsonSerial.put("userName", this.getUserName());
 		jsonSerial.put("birthdayDate", this.getBirthdayDate());
 		jsonSerial.put("completeName", this.getUserPasswordHash());
 		jsonSerial.put("e_mail", this.geteMail());
-		jsonSerial.put("ranking", (this.getUserRanking()).getRankingId());		
-		return jsonSerial.toString();		
+		jsonSerial.put("ranking", (this.getUserRanking()).getRankingId());
+		return jsonSerial.toString();
 	}
-	
+
 	/**
 	 * Get json data from string and fill the class
 	 * 
 	 * @param json
-	 * @throws JSONException 
+	 * @throws JSONException
 	 */
-	public void deserializeFromJson(String json) throws JSONException{
+	public void deserializeFromJson(String json) throws JSONException {
 		JSONObject jsonMessage = new JSONObject(json);
 		this.setUserName(jsonMessage.getString("userName"));
 		this.setBirthdayDate(jsonMessage.getLong("birthdayDate"));
@@ -119,5 +136,5 @@ public class UserModel {
 		this.seteMail(jsonMessage.getString("e_mail"));
 		this.setUserRanking(jsonMessage.getLong("ranking"));
 	}
-	
+
 }

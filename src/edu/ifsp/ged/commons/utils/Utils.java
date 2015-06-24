@@ -7,6 +7,9 @@ package edu.ifsp.ged.commons.utils;
  */
 public class Utils {
 	
+	public static final String PRIVATE_KEY = "/home/jvidiri/Dropbox/RSA/pkcs8_key";	
+	public static final String PUBLIC_KEY = "/home/jvidiri/Dropbox/RSA/public_key.der";
+	
 	/**
 	 * notifications types.
 	 * 
@@ -16,12 +19,12 @@ public class Utils {
 	}
 	
 	public enum enumUserJsonMessagesTypes{
-		REGIST(),MODIFY,DELETE
+		REGIST,MODIFY,DELETE
 	}
 	
-	public enum enumOpHours{
-		//TODO
-	}
+	public enum clientsTypes{
+		MOBILE, ADMIN_CONSOLE
+	}	
 	
 	public enum enumGasTypes{
 		COMUM, ADITIVADA, PREMIUM
