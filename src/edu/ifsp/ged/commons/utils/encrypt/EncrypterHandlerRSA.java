@@ -19,12 +19,13 @@ public class EncrypterHandlerRSA {
 	public static void main(String[] args) {
 
 		Base64.Encoder encoder = Base64.getEncoder();
+//		Base64.Decoder decoder = Base64.getDecoder();
 
 		String TextStream = "this is the input text";
 		byte[] Cipher;
 		System.out.println("input:\n" + TextStream);
 		Cipher = encrypt(TextStream,Utils.PUBLIC_KEY);
-		System.out.println("cipher:\n" + encoder.encodeToString(Cipher));
+		System.out.println("cipher:\n" + encoder.encodeToString(Cipher));		
 		System.out.println("decrypt:\n" + decrypt(Cipher, Utils.PRIVATE_KEY));
 	}
 

@@ -242,3 +242,7 @@ BEFORE UPDATE
 ON product
 FOR EACH STATEMENT
 EXECUTE PROCEDURE f_prodUpdate();
+
+select * from "stationLoginData"
+delete from "stationLoginData"
+select * from "stationLoginData" where "stationCNPJ" = '98062552000129'

@@ -13,6 +13,7 @@ import edu.ifsp.ged.commons.models.Station;
 import edu.ifsp.ged.commons.models.StationLogin;
 import edu.ifsp.ged.commons.models.User;
 import edu.ifsp.ged.commons.models.UserLogin;
+import edu.ifsp.ged.commons.utils.hash.HashHandler;
 
 /**
  * Classe responsavel pala conexão e manejamento do banco de dados.
@@ -136,6 +137,23 @@ public class DBFacade {
 			return newStation;
 		}		
 		return null;
+	}
+
+	/**
+	 * Pocura usuário na base de dados
+	 * 
+	 * @param userName
+	 * @return
+	 * @throws SQLException 
+	 */
+	public int stationLoginRegist(String CNPJ,String password) throws SQLException{										   
+		String selectUser = "insert into \"stationLoginData\"(\"stationCNPJ\",\"stationPassword\",\"station_id\") values (?,?,NULL);";		
+		PreparedStatement statement = conn.prepareStatement(selectUser);
+		//add the where parameter
+		statement.setString(1, CNPJ);
+		statement.setString(2, password);
+		System.out.println(statement);								
+		return statement.executeUpdate();
 	}
 	
 	/**
@@ -296,6 +314,19 @@ public class DBFacade {
 		return 0;
 	}
 
-	
+	public static void main(String[] args) {
+		DBFacade db = new DBFacade(); 
+		try {
+			db.createConnection();			
+			db.stationLoginRegist("98062552000129", HashHandler.createHash("teste123"));
+			StationLogin stl = db.getStationLoginByCNPJ("98062552000129");
+			HashHandler.validatePassword("teste123", stl.getStationPassword());
+			db.closeConnection();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 	
 }
